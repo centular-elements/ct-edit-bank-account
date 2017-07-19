@@ -107,7 +107,7 @@ Element for editing a bank account
             <div class="row">
               <div class="col-xs-12 col-sm-12">
                 <paper-button class="fancy margin-10v pull-right btn btn-danger" on-tap="_showDeleteConfim">Delete</paper-button>
-                <paper-button class$="fancy margin-10v pull-right btn [[_computeBtnStyle(_isStateEdit)]]" on-tap="_editBtnHandler">[[_computeButtonText(_isStateEdit)]]</paper-button>
+                <paper-button class$="fancy margin-10v pull-right btn [[ _computeBtnStyle(_isStateEdit) ]]" on-tap="_editBtnHandler">[[ _computeButtonText(_isStateEdit) ]]</paper-button>
               </div>
             </div>
           </div>
@@ -122,114 +122,130 @@ Element for editing a bank account
             <div class="row">
               <div class="col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <paper-input
-                          class="ct-label ct-bordered"
-                          label="Account Holder First Name"
-                          type="text"
-                          name="accountHolderFirstName"
-                          value="[[ _bankAccount.accountHolderFirstName ]]"
-                          required
-                          auto-validate
-                          error-message="Account holder first name required">
-                  </paper-input>
+                  <ct-editable-switcher value-prop="[[ _bankAccount.accountHolderFirstName ]]" edit-mode$="[[ _isStateEdit ]]">
+                    <paper-input
+                            class="ct-label ct-bordered"
+                            label="Account Holder First Name"
+                            type="text"
+                            name="accountHolderFirstName"
+                            value="[[ _bankAccount.accountHolderFirstName ]]"
+                            required
+                            auto-validate
+                            error-message="Account holder first name required">
+                    </paper-input>
+                  </ct-editable-switcher>
                 </div>
               </div>
               <div class="col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <paper-input
-                          label="Account Holder Last Name"
-                          type="text"
-                          name="accountHolderSurname"
-                          value="[[ _bankAccount.accountHolderSurname ]]"
-                          required
-                          auto-validate
-                          error-message="Account holder last name required">
-                  </paper-input>
+                  <ct-editable-switcher value-prop="[[ _bankAccount.accountHolderSurname ]]" edit-mode$="[[ _isStateEdit ]]">
+                    <paper-input
+                            label="Account Holder Last Name"
+                            type="text"
+                            name="accountHolderSurname"
+                            value="[[ _bankAccount.accountHolderSurname ]]"
+                            required
+                            auto-validate
+                            error-message="Account holder last name required">
+                    </paper-input>
+                  </ct-editable-switcher>
                 </div>
               </div>
               <div class="col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <paper-input
-                          label="Account Holder ID Number"
-                          type="text"
-                          name="accountHolderId"
-                          value="[[ _bankAccount.accountHolderId ]]"
-                          required
-                          auto-validate
-                          error-message="Account holder id number required">
-                  </paper-input>
+                  <ct-editable-switcher value-prop="[[ _bankAccount.accountHolderId ]]" edit-mode$="[[ _isStateEdit ]]">
+                    <paper-input
+                            label="Account Holder ID Number"
+                            type="text"
+                            name="accountHolderId"
+                            value="[[ _bankAccount.accountHolderId ]]"
+                            required
+                            auto-validate
+                            error-message="Account holder id number required">
+                    </paper-input>
+                  </ct-editable-switcher>
                 </div>
               </div>
               <div class="col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <paper-dropdown-menu
-                          class="custom-dropdown"
-                          id="accountTypeId"
-                          name="accountTypeId"
-                          label="Account Type"
-                          always-float-label
-                          noink
-                          no-animations
-                          required
-                          placeholder="Please select an account type">
-                    <paper-listbox class="dropdown-content" id="accountType" attr-for-selected="key" selected="[[ _bankAccount.accountType.id ]]">
-                      <template is="dom-repeat" items="[[ _accountTypes ]]">
-                        <paper-item key="[[item.id]]">[[item.name]]</paper-item>
-                      </template>
-                    </paper-listbox>
-                  </paper-dropdown-menu>
+                  <ct-editable-switcher value-prop="[[ _bankAccount.accountType.id ]]" edit-mode$="[[ _isStateEdit ]]">
+                    <paper-dropdown-menu
+                            class="custom-dropdown"
+                            id="accountTypeId"
+                            name="accountTypeId"
+                            label="Account Type"
+                            always-float-label
+                            noink
+                            no-animations
+                            required
+                            placeholder="Please select an account type">
+                      <paper-listbox class="dropdown-content" id="accountType" attr-for-selected="key" selected="[[ _bankAccount.accountType.id ]]">
+                        <template is="dom-repeat" items="[[ _accountTypes ]]">
+                          <paper-item key="[[item.id]]">[[item.name]]</paper-item>
+                        </template>
+                      </paper-listbox>
+                    </paper-dropdown-menu>
+                  </ct-editable-switcher>
                 </div>
               </div>
               <div class="col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <paper-input
-                          label="Bank"
-                          type="text"
-                          name="bank"
-                          value="[[ _bankAccount.bank ]]"
-                          required
-                          auto-validate
-                          error-message="Bank required">
-                  </paper-input>
+                  <ct-editable-switcher value-prop="[[ _bankAccount.bank ]]" edit-mode$="[[ _isStateEdit ]]">
+                    <paper-input
+                            label="Bank"
+                            type="text"
+                            name="bank"
+                            value="[[ _bankAccount.bank ]]"
+                            required
+                            auto-validate
+                            error-message="Bank required">
+                    </paper-input>
+                  </ct-editable-switcher>
                 </div>
               </div>
               <div class="col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <paper-input
-                          label="Branch Code"
-                          type="text"
-                          name="branchCode"
-                          value="[[ _bankAccount.branchCode ]]"
-                          required
-                          auto-validate
-                          error-message="Branch code required">
-                  </paper-input>
+                  <ct-editable-switcher value-prop="[[ _bankAccount.branchCode ]]" edit-mode$="[[ _isStateEdit ]]">
+                    <paper-input
+                            label="Branch Code"
+                            type="text"
+                            name="branchCode"
+                            value="[[ _bankAccount.branchCode ]]"
+                            required
+                            auto-validate
+                            error-message="Branch code required">
+                    </paper-input>
+                  </ct-editable-switcher>
                 </div>
               </div>
               <div class="col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <paper-input
-                          label="Branch Name"
-                          type="text"
-                          name="branchName"
-                          value="[[ _bankAccount.branchName ]]"
-                          required
-                          auto-validate
-                          error-message="Branch name required">
-                  </paper-input>
+                  <ct-editable-switcher value-prop="[[ _bankAccount.branchName ]]" edit-mode$="[[ _isStateEdit ]]">
+                    <paper-input
+                            label="Branch Name"
+                            type="text"
+                            name="branchName"
+                            value="[[ _bankAccount.branchName ]]"
+                            required
+                            auto-validate
+                            error-message="Branch name required">
+                    </paper-input>
+                  </ct-editable-switcher>
                 </div>
               </div>
               <div class="col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <paper-input
-                          label="Account Number"
-                          type="text"
-                          name="accountNumber"
-                          value="[[ _bankAccount.accountNumber ]]"
-                          required
-                          auto-validate
-                          error-message="Account number required">
-                  </paper-input>
+                  <ct-editable-switcher value-prop="[[ _bankAccount.accountNumber ]]" edit-mode$="[[ _isStateEdit ]]">
+                    <paper-input
+                            label="Account Number"
+                            type="text"
+                            name="accountNumber"
+                            value="[[ _bankAccount.accountNumber ]]"
+                            required
+                            auto-validate
+                            error-message="Account number required">
+                    </paper-input>
+                  </ct-editable-switcher>
                 </div>
               </div>
             </div>
