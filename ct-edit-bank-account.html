@@ -1,0 +1,344 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-item/paper-icon-item.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+
+<link rel="import" href="../iron-form/iron-form.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<link rel="import" href="../ct-shared-styles/ct-application-theme.html">
+<link rel="import" href="../ct-core-utils/ct-api-consumer-behaviour.html">
+<link rel="import" href="../ct-editable-switcher/ct-editable-switcher.html">
+<link rel="import" href="../ct-delete-dialog/ct-delete-dialog.html">
+<link rel="import" href="../ct-bank-account-api/ct-bank-account-api.html">
+
+<!--
+`ct-edit-bank-account`
+Element for editing a bank account
+
+@demo demo/index.html
+-->
+
+<dom-module id="ct-edit-bank-account">
+  <template>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style is="custom-style">
+      :host {
+        --paper-input-error: {
+          color:#00ff00;
+        };
+
+        --paper-input-container:  {
+          border-top:1px solid #ccc;
+          border-left:1px solid #ccc;
+          border-right:1px solid #ccc;
+          border-bottom: none;
+          padding: 0;
+          margin-bottom: 24px;
+        };
+
+        /*padding to move from border */
+        --paper-input-container-input: {
+          padding-left: 10px;
+          left: auto;
+        };
+
+        --paper-input-container-label: {
+          margin-left: 10px;
+        };
+        --paper-input-container-label-floating: {
+          margin-left: 10px;
+        };
+
+        --paper-input-error: {
+          left: auto !important;
+          right: 20px !important;
+          font-style: italic;
+        };
+
+        --paper-icon-button-ink-color: var(--breadcrumb-icon-color-ripple);
+      }
+
+      /* local color for button */
+      paper-button.fancy {
+        margin-top: 3px;
+
+      }
+      /*local dropdown menu */
+      paper-dropdown-menu.custom-dropdown {
+        width: 100%;
+        --paper-input-container: {
+          border-top:1px solid #ccc;
+          border-left:1px solid #ccc;
+          border-right:1px solid #ccc;
+          border-bottom: none;
+          padding: 0;
+          margin-bottom: 8px;
+        };
+        --paper-input-container-input: {
+          padding-left: 10px;
+        };
+      }
+
+      .primary-box-container {
+        background: #3d3d3d;
+        margin-bottom: 40px;
+
+      }
+      .primary-box-container h3 {
+        color: #ffffff;
+        margin: 10px 0;
+      }
+
+      .breadcrumb-icon {
+        --paper-icon-button-ink-color: {#fff !important;};
+      }
+
+      .main-section .primary-box-container h3 {
+        font-size: 20px;
+        line-height: 21px;
+        padding: 0 15px;
+      }
+    </style>
+
+    <ct-bank-account-api id="bankAccountsApi"></ct-bank-account-api>
+
+    <div class="main-section">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-xs-12 primary-box-container">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12">
+                <paper-button class="fancy margin-10v pull-right btn btn-danger" on-tap="_showDeleteConfim">Delete</paper-button>
+                <paper-button class$="fancy margin-10v pull-right btn [[_computeBtnStyle(_isStateEdit)]]" on-tap="_editBtnHandler">[[_computeButtonText(_isStateEdit)]]</paper-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form is="iron-form"
+              id="form"
+              method="post"
+              disable-native-validation-ui
+              novalidate>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <paper-input
+                          class="ct-label ct-bordered"
+                          label="Account Holder First Name"
+                          type="text"
+                          name="accountHolderFirstName"
+                          value="[[ _bankAccount.accountHolderFirstName ]]"
+                          required
+                          auto-validate
+                          error-message="Account holder first name required">
+                  </paper-input>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <paper-input
+                          label="Account Holder Last Name"
+                          type="text"
+                          name="accountHolderSurname"
+                          value="[[ _bankAccount.accountHolderLastName ]]"
+                          required
+                          auto-validate
+                          error-message="Account holder last name required">
+                  </paper-input>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <paper-input
+                          label="Account Holder ID Number"
+                          type="text"
+                          name="accountHolderId"
+                          value="[[ _bankAccount.accountHolderIdNumber ]]"
+                          required
+                          auto-validate
+                          error-message="Account holder id number required">
+                  </paper-input>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <paper-dropdown-menu
+                          class="custom-dropdown"
+                          id="accountTypeId"
+                          name="accountTypeId"
+                          label="Account Type"
+                          always-float-label
+                          noink
+                          no-animations
+                          required
+                          placeholder="Please select an account type">
+                    <paper-listbox class="dropdown-content" id="accountType" attr-for-selected="key" selected="[[ _bankAccount.accountTypeId ]]">
+                      <template is="dom-repeat" items="[[ _accountTypes ]]">
+                        <paper-item key="[[item.id]]">[[item.name]]</paper-item>
+                      </template>
+                    </paper-listbox>
+                  </paper-dropdown-menu>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <paper-input
+                          label="Bank"
+                          type="text"
+                          name="bank"
+                          value="[[ _bankAccount.bank ]]"
+                          required
+                          auto-validate
+                          error-message="Bank required">
+                  </paper-input>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <paper-input
+                          label="Branch Code"
+                          type="text"
+                          name="branchCode"
+                          value="[[ _bankAccount.branchCode ]]"
+                          required
+                          auto-validate
+                          error-message="Branch code required">
+                  </paper-input>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <paper-input
+                          label="Branch Name"
+                          type="text"
+                          name="branchName"
+                          value="[[ _bankAccount.branchName ]]"
+                          required
+                          auto-validate
+                          error-message="Branch name required">
+                  </paper-input>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <paper-input
+                          label="Account Number"
+                          type="text"
+                          name="accountNumber"
+                          value="[[ _bankAccount.accountNumber ]]"
+                          required
+                          auto-validate
+                          error-message="Account number required">
+                  </paper-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <ct-delete-dialog id="deleteDialog"></ct-delete-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'ct-edit-bank-account',
+      behaviors: [CT.Behaviours.ApiConsumer],
+
+      properties: {
+        refreshing: {
+          type: Boolean,
+          notify: true
+        },
+
+        bankAccountId: String
+      },
+
+      listeners: {
+        'iron-form-presubmit': '_formHandler'
+      },
+
+      observers: {
+        '_init(bankAccountId)'
+      },
+
+      refresh: function() {
+        if (this.bankAccountId) {
+          this._init();
+        }
+      },
+
+      _init: function() {
+        this.refreshing = true;
+        this.$.bankAccountsApi.getBankAccount(this.bankAccountId)
+                .then(this._setPropertyResponse.bind(this, '_bankAccount'))
+                .catch(this.fire.bind(this, 'toast', {message: 'Failed to load bank account', type: 'danger'}))
+                .finally(this.set.bind(this, 'refreshing', false));
+      },
+
+      _toggleStatus : function() {
+        this._isStateEdit = !this._isStateEdit;
+      },
+
+      _editBtnHandler : function() {
+        var form = this.$$('form');
+        if (this._isStateEdit) {
+          if (form.validate()) {
+            form.submit();
+          }
+        } else {
+          this._toggleStatus();
+        }
+      },
+
+      _formHandler : function(e) {
+        e.preventDefault();
+
+        var newBankAccountDetails = this.$$('form').serialize();
+
+        this.$.bankAccountsApi.updateBankAccount(this.bankAccountId, newBankAccountDetails)
+                .then(this._setPropertyResponse.bind(this, '_bankAccount'))
+                .catch(this.fire.bind(this, 'toast', {message: 'Failed to load bank account', type: 'danger'}))
+                .finally(this.this._toggleStatus.bind(this));
+      },
+
+      _showDeleteConfim: function(e) {
+        this.$.deleteDialog.resource = 'this bank account';
+        this.$.deleteDialog.subject = 'Delete Bank Account';
+        this.$.deleteDialog.open();
+      },
+
+      _deleteBankAccount: function () {
+        this.$.bankAccountsApi.deleteBankAccount(this.bankAccountId)
+                .then(this.fire.bind(this, 'ct-bank-account-deleted'))
+                .catch(this.fire.bind(this, 'toast', {message: 'Failed to delete bank account', type: 'danger'}))
+      },
+
+      _computeButtonText: function(isEdit) {
+        return (isEdit) ? 'Save Details' : 'Edit Details';
+      },
+
+      _computeBtnStyle : function(isEdit) {
+        return (isEdit) ? "btn-success" : "btn-primary";
+      },
+
+      _patchOverlay: function (e) {
+        if (e.target.withBackdrop) {
+          e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
+        }
+      },
+
+
+    });
+  </script>
+</dom-module>
