@@ -140,7 +140,7 @@ Element for editing a bank account
                           label="Account Holder Last Name"
                           type="text"
                           name="accountHolderSurname"
-                          value="[[ _bankAccount.accountHolderLastName ]]"
+                          value="[[ _bankAccount.accountHolderSurname ]]"
                           required
                           auto-validate
                           error-message="Account holder last name required">
@@ -153,7 +153,7 @@ Element for editing a bank account
                           label="Account Holder ID Number"
                           type="text"
                           name="accountHolderId"
-                          value="[[ _bankAccount.accountHolderIdNumber ]]"
+                          value="[[ _bankAccount.accountHolderId ]]"
                           required
                           auto-validate
                           error-message="Account holder id number required">
@@ -172,7 +172,7 @@ Element for editing a bank account
                           no-animations
                           required
                           placeholder="Please select an account type">
-                    <paper-listbox class="dropdown-content" id="accountType" attr-for-selected="key" selected="[[ _bankAccount.accountTypeId ]]">
+                    <paper-listbox class="dropdown-content" id="accountType" attr-for-selected="key" selected="[[ _bankAccount.accountType.id ]]">
                       <template is="dom-repeat" items="[[ _accountTypes ]]">
                         <paper-item key="[[item.id]]">[[item.name]]</paper-item>
                       </template>
