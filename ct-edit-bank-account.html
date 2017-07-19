@@ -268,9 +268,9 @@ Element for editing a bank account
         'iron-form-presubmit': '_formHandler'
       },
 
-      observers: {
+      observers: [
         '_init(bankAccountId)'
-      },
+      ],
 
       refresh: function() {
         if (this.bankAccountId) {
