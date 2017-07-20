@@ -14,7 +14,6 @@
     "paper-dialog": "PolymerElements/paper-dialog#^1.1.0",
     "ct-shared-styles": "Centular/shared-styles",
     "ct-core-utils": "centular-elements/ct-core-utils",
-    "ct-editable-switcher": "centular-elements/ct-editable-switcher",
     "ct-delete-dialog": "centular-elements/ct-delete-dialog",
     "ct-bank-accounts-api": "centular-elements/ct-bank-accounts-api"
   },
