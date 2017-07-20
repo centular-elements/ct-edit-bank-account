@@ -269,7 +269,12 @@ Element for editing a bank account
           notify: true
         },
 
-        bankAccountId: String
+        bankAccountId: String,
+
+        _isStateEdit: {
+          type: Boolean,
+          value: function() { return false; }
+        },
       },
 
       listeners: {
@@ -334,7 +339,7 @@ Element for editing a bank account
 
       _showDeleteConfim: function(e) {
         this.$.deleteDialog.resource = 'this bank account';
-        this.$.deleteDialog.subject = 'Delete Bank Account';
+        this.$.deleteDialog.subject = 'Bank Account';
         this.$.deleteDialog.open();
       },
 
